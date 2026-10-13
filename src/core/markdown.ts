@@ -1,7 +1,13 @@
 import { Marked } from 'marked';
 import DOMPurify from 'dompurify';
+import { markedHighlight } from 'marked-highlight';
+import { highlightCode } from './highlight';
+import { linkifyWiki } from './wikilinks';
 
-const marked = new Marked({ gfm: true, breaks: false });
+const marked = new Marked(
+  markedHighlight({ langPrefix: 'hljs language-', highlight: (code, lang) => highlightCode(code, lang) }),
+  { gfm: true, breaks: false },
+);
 
 const SAFE_URL = /^(?:https?:|mailto:|tel:|#|\/|\.{0,2}\/|data:image\/(?:png|gif|jpe?g|webp);base64,)/i;
 
@@ -20,7 +26,7 @@ function ensureHooks(): void {
       for (const a of [...node.attributes]) if (!['type', 'checked'].includes(a.name)) node.removeAttribute(a.name);
       node.setAttribute('disabled', '');
     }
-    if (node.tagName === 'A' && node.getAttribute('href')) {
+    if (node.tagName === 'A' && node.getAttribute('href') && !node.getAttribute('href')!.startsWith('#')) {
       node.setAttribute('target', '_blank');
       node.setAttribute('rel', 'noopener noreferrer nofollow');
     }
@@ -28,9 +34,12 @@ function ensureHooks(): void {
 }
 
 /** Render markdown to sanitized HTML. Safe to assign to innerHTML. */
-export function renderMarkdown(src: string): string {
+export interface RenderOptions { noteExists?: (title: string) => boolean }
+
+export function renderMarkdown(src: string, opts: RenderOptions = {}): string {
   ensureHooks();
-  const raw = marked.parse(src, { async: false }) as string;
+  const withLinks = opts.noteExists ? linkifyWiki(src, opts.noteExists) : src;
+  const raw = marked.parse(withLinks, { async: false }) as string;
   return DOMPurify.sanitize(raw, {
     USE_PROFILES: { html: true },
     FORBID_TAGS: ['style', 'form', 'button', 'textarea', 'select', 'iframe', 'object', 'embed'],
