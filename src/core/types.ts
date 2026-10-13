@@ -7,3 +7,12 @@ export interface Note {
   updatedAt: number;
   pinned?: boolean;
 }
+
+export interface Snapshot {
+  id: string;
+  noteId: string;
+  title: string;
+  body: string;
+  tags: string[];
+  savedAt: number;
+}
