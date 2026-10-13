@@ -8,6 +8,11 @@
 
 No account. No server. No tracking. Your notes never leave your device.
 
+**[▶ Try the live demo](https://ha2mad.github.io/marknest/)**
+
+[![CI](https://github.com/Ha2mad/marknest/actions/workflows/ci.yml/badge.svg)](https://github.com/Ha2mad/marknest/actions/workflows/ci.yml)
+[![Deploy](https://github.com/Ha2mad/marknest/actions/workflows/pages.yml/badge.svg)](https://github.com/Ha2mad/marknest/actions/workflows/pages.yml)
+
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 ![Bundle](https://img.shields.io/badge/gzip-~60%20kB-6d5dfc)
@@ -75,27 +80,18 @@ npm run dev        # http://localhost:5173
 
 ## 🌐 Deploy to GitHub Pages
 
-The build uses relative paths (`base: './'`), so it works from any sub-path such as `https://<user>.github.io/marknest/`.
+The live demo at https://ha2mad.github.io/marknest/ is deployed by `.github/workflows/pages.yml` on every push to `main`. It runs the tests, then builds with `BASE_PATH=/marknest/`.
+
+To deploy your own fork:
 
 1. Go to **Settings → Pages → Build and deployment** and set **Source** to **GitHub Actions**.
-2. Copy `docs/ci/pages.yml` to `.github/workflows/pages.yml` (see *Continuous integration* below) and push it.
-3. Go to **Actions → Deploy to GitHub Pages → Run workflow**. The workflow only runs when triggered manually.
+2. Change `BASE_PATH` in `pages.yml` to `/<your-repo-name>/` and push to `main`.
 
-You can host `dist/` on any static host (Netlify, Cloudflare Pages, Vercel). The service worker needs HTTPS, or `localhost`.
+Without `BASE_PATH`, the build uses relative paths, so `dist/` also works on any static host (Netlify, Cloudflare Pages, Vercel). The service worker needs HTTPS, or `localhost`.
 
 ## ✅ Continuous integration
 
-Ready-to-use GitHub Actions workflows live in `docs/ci/`:
-
-- `ci.yml` runs lint, tests, build and `npm audit` on every push and pull request.
-- `pages.yml` deploys to GitHub Pages when you trigger it manually.
-
-To enable them, run:
-
-```bash
-mkdir -p .github/workflows && cp docs/ci/*.yml .github/workflows/
-git add .github && git commit -m "ci: enable workflows" && git push
-```
+`.github/workflows/ci.yml` runs lint, tests, the build and `npm audit` on every push and pull request.
 
 ## 🏗️ Architecture
 
