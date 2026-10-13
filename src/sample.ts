@@ -6,6 +6,8 @@ MarkNest is a **local-first** markdown notebook. Everything lives in your browse
 - Write markdown on the left, see the preview on the right
 - Add tags in the toolbar, or inline like #getting-started
 - Search with words, \`"exact phrases"\`, \`#tag\` and \`-exclude\`
+- Link notes with \`[[Note title]]\` — try [[My first idea]] (click to create it)
+- Every save keeps a version: open **History** (\`Alt+H\`) to diff & restore
 - Press \`?\` for keyboard shortcuts
 
 \`\`\`ts

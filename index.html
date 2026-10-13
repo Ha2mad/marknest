@@ -37,13 +37,34 @@
           <button data-view="edit">Edit</button><button data-view="split">Split</button><button data-view="preview">Preview</button>
         </div>
         <button id="pin" title="Pin note">📌</button>
+        <button id="panel-toggle" title="Links &amp; history (Alt+H)" aria-pressed="false">History</button>
         <button id="export-md" title="Download as .md (Ctrl+Shift+S)">.md</button>
         <button id="delete" class="danger" title="Delete note">Delete</button>
       </header>
+      <div class="content">
       <section id="workspace" class="workspace split">
-        <textarea id="editor" spellcheck="true" aria-label="Markdown editor" placeholder="# Start writing…"></textarea>
+        <div class="editor-wrap">
+          <textarea id="editor" spellcheck="true" aria-label="Markdown editor" placeholder="# Start writing…  (type [[ to link a note)"></textarea>
+          <ul id="autocomplete" class="autocomplete" role="listbox" aria-label="Link suggestions" hidden></ul>
+        </div>
         <article id="preview" class="preview markdown-body" aria-label="Preview"></article>
       </section>
+      <aside id="panel" class="panel" hidden aria-label="Links and history">
+        <div class="section-title">Backlinks <span id="backlink-count" class="muted"></span></div>
+        <ul id="backlinks" class="mini-list"></ul>
+        <div class="section-title">Outgoing links</div>
+        <ul id="outlinks" class="mini-list"></ul>
+        <div class="section-title">Version history <button id="snapshot-now" class="link" title="Save a snapshot now (Ctrl+S)">snapshot now</button></div>
+        <ul id="history" class="mini-list history"></ul>
+        <div id="history-view" class="history-view" hidden>
+          <div class="hv-head"><strong id="hv-title"></strong>
+            <div class="seg"><button id="hv-diff" aria-pressed="true">Diff</button><button id="hv-preview">Preview</button></div>
+          </div>
+          <div id="hv-body" class="hv-body"></div>
+          <div class="hv-actions"><button id="hv-restore" class="primary">Restore this version</button><button id="hv-close">Close</button></div>
+        </div>
+      </aside>
+      </div>
       <div id="empty" class="empty" hidden>
         <h2>No note selected</h2><p>Create a note with <kbd>Alt</kbd>+<kbd>N</kbd> or pick one from the list.</p>
       </div>
@@ -57,6 +78,8 @@
       <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd></td><td>Download .md</td></tr>
       <tr><td><kbd>Ctrl</kbd>+<kbd>E</kbd></td><td>Cycle edit / split / preview</td></tr>
       <tr><td><kbd>Alt</kbd>+<kbd>↑/↓</kbd></td><td>Previous / next note</td></tr>
+      <tr><td><kbd>[[</kbd></td><td>Link to a note (autocomplete)</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>H</kbd></td><td>Links &amp; history panel</td></tr>
       <tr><td><kbd>Alt</kbd>+<kbd>T</kbd></td><td>Toggle theme</td></tr>
       <tr><td><kbd>Ctrl</kbd>+<kbd>B</kbd> / <kbd>I</kbd></td><td>Bold / italic</td></tr>
       <tr><td><kbd>?</kbd> (outside editor)</td><td>This help</td></tr>
