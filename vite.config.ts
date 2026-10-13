@@ -21,7 +21,8 @@ function swPlugin(): Plugin {
 }
 
 export default defineConfig({
-  base: './',
+  // Relative by default; the Pages workflow sets BASE_PATH=/marknest/.
+  base: process.env.BASE_PATH || './',
   plugins: [swPlugin()],
   test: { environment: 'jsdom', include: ['tests/**/*.test.ts'] },
 } as never);

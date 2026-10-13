@@ -1,6 +1,7 @@
 name: Deploy to GitHub Pages
-# Manual trigger only. Enable Pages (Settings → Pages → Source: GitHub Actions) first.
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -22,7 +23,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm test
       - run: npm run build
+        env:
+          BASE_PATH: /marknest/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
